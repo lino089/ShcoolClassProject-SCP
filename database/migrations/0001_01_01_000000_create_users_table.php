@@ -13,7 +13,19 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+
+            $table->enum('role', ['vice_principal', 'teacher', 'student', 'parent']);
+            $table->string('nis_nip')->unique();
+            $table->string('fet_staff_id')->nullable()->unique();
+            $table->boolean('must_change_password')->default(true);
+            $table->string('google_id')->nullable();
+            $table->string('phone_number')->nullable();
+            $table->foreignId('linked_student_id')->nullable();
+            $table->foreignId('class_id')->nullable();
+            $table->date('graduation_date')->nullable();
+            $table->softDeletes('deleted_at');
+
+            // $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
