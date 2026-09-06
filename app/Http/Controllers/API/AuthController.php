@@ -49,6 +49,6 @@ class AuthController extends Controller
             'success' => true,
             'message' => 'Berhasil Login',
             "data" => $token
-        ]);
+        ], 200);
     }
 }
