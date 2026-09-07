@@ -51,4 +51,12 @@ class AuthController extends Controller
             "data" => $token
         ], 200);
     }
+
+    public function me(Request $request){
+        return response()->json([
+            'success' => true,
+            'message' => 'Data profil berhasil diambil',
+            'data' => $request->user()
+        ], 200);
+    }
 }
