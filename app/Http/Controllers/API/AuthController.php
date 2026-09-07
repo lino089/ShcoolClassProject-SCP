@@ -56,7 +56,17 @@ class AuthController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Data profil berhasil diambil',
-            'data' => $request->user()
+            // Menggampil data user(pengguna yang sedang login), dan user() ini adalah method bawaan laravel bukan dari DB.
+            'data' => $request->user() 
+        ], 200);
+    }
+
+    public function logout(Request $request){
+        $request->user()->currentAccessToken()->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Logout Berhasil',
         ], 200);
     }
 }
