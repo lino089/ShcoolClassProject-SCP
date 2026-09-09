@@ -25,7 +25,7 @@ class academicSettingController extends Controller
                 'errors' => [
                     'password' => ['Password tidak valid.']
                 ]
-            ], 401);
+            ], 422);
         }
 
         DB::table('system_configurations')->where('id', 1)->update([
