@@ -26,3 +26,11 @@ Route::middleware('auth:sanctum')->group(function() {
 
     Route::post('/logout', [AuthController::class, 'logout']);
 });
+
+
+Route::middleware(['auth:sanctum', 'role:vice_principal'])->get('/waka-only', function (Request $request) {
+    return response()->json([
+        'success' => true,
+        'message' => 'Selamat datang waka kurikulum'
+    ]);
+});

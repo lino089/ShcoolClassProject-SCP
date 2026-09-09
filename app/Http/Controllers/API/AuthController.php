@@ -38,7 +38,7 @@ class AuthController extends Controller
                 'error' => [
                     'field' => 'NIS/NIP atau Password salah'
                 ]
-            ]);
+            ], 401);
         }
 
         $user = User::where('nis_nip', $request->nis_nip)->firstOrFail();
