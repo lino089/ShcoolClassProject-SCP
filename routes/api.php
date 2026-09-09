@@ -37,5 +37,5 @@ Route::middleware(['auth:sanctum', 'role:vice_principal'])->group(function () {
         ]);
     });
 
-    Route::patch('/academic-settings/monday_status', [academicSettingController::class, 'updateMondayStatus']);
+    Route::patch('/academic-settings/monday-status', [academicSettingController::class, 'updateMondayStatus']);
 });
