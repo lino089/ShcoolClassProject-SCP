@@ -26,11 +26,11 @@ class DatabaseSeeder extends Seeder
         //     'must_change_password' => false,
         //     'name' => 'Waka Kurikulum',
         // ]);
-        
-        DB::table('system_configurations')->insert([
-            'id' => 1,
-            'active_cycle' => 1,
-            'monday_is_upacara' => true
-        ]);
+
+        // DB::table('system_configurations')->insert([
+        //     'id' => 1,
+        //     'active_cycle' => 1,
+        //     'monday_is_upacara' => true
+        // ]);
     }
 }
