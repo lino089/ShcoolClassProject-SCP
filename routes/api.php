@@ -49,4 +49,6 @@ Route::middleware(['auth:sanctum', 'role:vice_principal'])->group(function () {
     Route::post('/students', [StudentController::class, 'store']);
 
     Route::post('/teachers', [TeacherController::class, 'store']);
+
+    Route::post('/teachers/{id}/assignments', [TeacherController::class, 'assignRole']);
 });

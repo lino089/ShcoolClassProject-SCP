@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Models\TeacherAssignment;
 use GrahamCampbell\ResultType\Success;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -45,6 +46,35 @@ class TeacherController extends Controller
                 'teacher' => $teacher,
                 'password' => $randomPassword
             ]
+        ], 201);
+    }
+
+    public function assignRole(Request $request, $id){
+        $teacher = User::where('role', 'teacher')->findOrFail($id);
+
+        $validator = Validator::make($request->all(), [
+            'type' => 'required|in:kesiswaan,wali_kelas',
+            'class_id' => 'required_if:type,wali_kelas|exists:classes,id|nullable'
+        ]);
+
+        if($validator->fails()){
+            return response()->json([
+                'success' => false,
+                'message' => 'Validasi gagal',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        $assignment = TeacherAssignment::create([
+            'user_id' => $teacher->id,
+            'type' => $request->type,
+            'class_id' => $request->class_id
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Tugas tambahan berhasil diberikan',
+            'data' => $assignment
         ], 201);
     }
 }
