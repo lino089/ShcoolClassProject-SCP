@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\academicSettingController;
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\SchoolClassController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -38,4 +39,7 @@ Route::middleware(['auth:sanctum', 'role:vice_principal'])->group(function () {
     });
 
     Route::patch('/academic-settings/monday-status', [academicSettingController::class, 'updateMondayStatus']);
+
+    Route::get('/classes', [SchoolClassController::class, 'index']);
+    Route::post('/classes', [SchoolClassController::class, 'store']);
 });
