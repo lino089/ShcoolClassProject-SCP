@@ -47,9 +47,21 @@ class SchoolClassController extends Controller
         ]);
 
         return response()->json([
-            'Success' => true,
+            'success' => true,
             'message' => 'Data berhasil ditambahkan',
             'data' => $schoolClass
         ],201);
+    }
+
+    public function destroy($id){
+        $schoolClass = SchoolClass::findOrFail($id);
+
+        $schoolClass->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Data kelas berhasil dihapus',
+            'data' => $schoolClass
+        ]);
     }
 }

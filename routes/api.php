@@ -42,4 +42,5 @@ Route::middleware(['auth:sanctum', 'role:vice_principal'])->group(function () {
 
     Route::get('/classes', [SchoolClassController::class, 'index']);
     Route::post('/classes', [SchoolClassController::class, 'store']);
+    Route::delete('/classes/{id}', [SchoolClassController::class, 'destroy']);
 });
