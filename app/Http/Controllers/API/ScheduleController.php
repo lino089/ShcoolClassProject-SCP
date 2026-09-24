@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\API;
 
+use GrahamCampbell\ResultType\Success;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Schedule;
+use Illuminate\Support\Facades\Hash;
 
 class ScheduleController extends Controller
 {
@@ -19,7 +21,8 @@ class ScheduleController extends Controller
             'room_id' => 'required|integer|exists:rooms,id',
             'subject_id' => 'required|integer|exists:subjects,id',
             'day_of_week' => 'required|integer',
-            'source' => 'required|in:manual,imported'
+            'source' => 'required|in:manual,imported',
+            'password' => 'required|string'
         ]);
 
         if($validator->fails()){
@@ -28,6 +31,16 @@ class ScheduleController extends Controller
                 'message' => 'Validasi Gagal',
                 'errors' => $validator->errors()
             ], 422);
+        }
+
+        if(!Hash::check($request->password, $request->user()->password)){
+            return response()->json([
+                'success' => false,
+                'message' => 'konfirmasi gagal',
+                'errors' => [
+                    'password' => ['Password Salah!!']
+                ]
+            ], 403);
         }
 
         $startPeriod = $request->period_number;
