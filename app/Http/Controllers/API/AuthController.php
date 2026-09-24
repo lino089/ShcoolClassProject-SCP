@@ -27,7 +27,7 @@ class AuthController extends Controller
                 'errors' => [
                     'field' => $validator->errors()
                 ]
-            ]);
+            ], 422);
         }
 
         // Memvalidasi kredensial yang dimasukan

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\academicSettingController;
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\ScheduleController;
 use App\Http\Controllers\API\SchoolClassController;
 use App\Http\Controllers\API\StudentController;
 use App\Http\Controllers\API\TeacherController;
@@ -51,4 +52,6 @@ Route::middleware(['auth:sanctum', 'role:vice_principal'])->group(function () {
     Route::post('/teachers', [TeacherController::class, 'store']);
 
     Route::post('/teachers/{id}/assignments', [TeacherController::class, 'assignRole']);
+
+    Route::post('/schedules', [ScheduleController::class, 'store']);
 });
