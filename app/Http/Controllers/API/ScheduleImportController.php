@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Jobs\ParseSchedulePdfJob;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
@@ -35,6 +36,8 @@ class ScheduleImportController extends Controller
             'file_path_ruangan' => $pathRuangan,
             'status' => 'uploaded'
         ]);
+
+        ParseSchedulePdfJob::dispatch($import->id);
 
         return response()->json([
             'success' => true,
