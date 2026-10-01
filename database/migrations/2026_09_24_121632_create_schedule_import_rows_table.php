@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('import_id')->constrained('schedule_imports');
             $table->json('raw_data');
-            $table->foreignId('matched_class_id')->constrained('classes');
-            $table->foreignId('matched_teacher_id')->constrained('users');
-            $table->foreignId('matched_room_id')->constrained('rooms');
+            $table->foreignId('matched_class_id')->nullable()->constrained('classes');
+            $table->foreignId('matched_teacher_id')->nullable()->constrained('users');
+            $table->foreignId('matched_room_id')->nullable()->constrained('rooms');
             $table->foreignId('matched_subject_id')->nullable()->constrained('subjects');
             $table->integer('day_of_week');
             $table->integer('period_number');

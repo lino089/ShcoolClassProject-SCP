@@ -44,6 +44,16 @@ class ScheduleImportController extends Controller
             'message' => 'File jadwal diunggah. Sedang memperoses...',
             'data' => $import
         ], 201);
+    }
 
+    public function show($id) 
+    {
+        $import = ScheduleImport::with('rows')->findOrFail($id);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Detail preview import jadwal.',
+            'data' => $import
+        ]);
     }
 }
