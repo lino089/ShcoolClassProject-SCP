@@ -13,4 +13,8 @@ class ScheduleImport extends Model
             'file_path_ruangan',
             'status',
     ];
+
+    public function rows(){
+        return $this->hasMany(ScheduleImportRow::class, 'import_id');
+    }
 }

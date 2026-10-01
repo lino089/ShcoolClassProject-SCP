@@ -9,8 +9,8 @@ dummy_output = [
         "kelas_mentah": "X RPL 1",
         "hari_mentah": "Senin",
         "jam_mentah": "1-2",
-        "mapel_mentah": "MATEMATIKA",
-        "guru_mentah": "Budi Santoso",
+        "mapel_mentah": "Matematika",
+        "guru_mentah": "Rossyda rahmadani",
         "ruang_mentah": "Lab.19"
     }
 ];

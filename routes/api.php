@@ -6,6 +6,7 @@ use App\Http\Controllers\API\ScheduleController;
 use App\Http\Controllers\API\ScheduleImportController;
 use App\Http\Controllers\API\SchoolClassController;
 use App\Http\Controllers\API\StudentController;
+use App\Http\Controllers\API\SubjectController;
 use App\Http\Controllers\API\TeacherController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -57,4 +58,8 @@ Route::middleware(['auth:sanctum', 'role:vice_principal'])->group(function () {
     Route::post('/schedules', [ScheduleController::class, 'store']);
 
     Route::post('/schedule-imports', [ScheduleImportController::class, 'store']);
+
+    Route::get('/schedule-imports/{id}', [ScheduleImportController::class, 'show']);
+
+    Route::post('/subject', [SubjectController::class, 'store']);
 });
