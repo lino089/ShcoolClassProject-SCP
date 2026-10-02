@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('waka_id')->constrained('users');
             $table->integer('cycle_type');
-            $table->string('file_path_kelas');
+            $table->string('file_path_kelas')->nullable();
             $table->string('file_path_ruangan')->nullable();
             $table->enum('status', ['uploaded', 'parsing', 'preview_ready', 'confirmed', 'faild']);
             $table->string('parser_version')->default('v1.0');

@@ -46,7 +46,9 @@ Route::middleware(['auth:sanctum', 'role:vice_principal'])->group(function () {
     Route::patch('/academic-settings/monday-status', [academicSettingController::class, 'updateMondayStatus']);
 
     Route::get('/classes', [SchoolClassController::class, 'index']);
+
     Route::post('/classes', [SchoolClassController::class, 'store']);
+
     Route::delete('/classes/{id}', [SchoolClassController::class, 'destroy']);
 
     Route::post('/students', [StudentController::class, 'store']);
@@ -62,4 +64,6 @@ Route::middleware(['auth:sanctum', 'role:vice_principal'])->group(function () {
     Route::get('/schedule-imports/{id}', [ScheduleImportController::class, 'show']);
 
     Route::post('/subject', [SubjectController::class, 'store']);
+
+    Route::post('/schedule-imports/{id}/confirm', [ScheduleImportController::class, 'confirm']);
 });
