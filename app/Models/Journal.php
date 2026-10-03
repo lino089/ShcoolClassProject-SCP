@@ -11,4 +11,8 @@ class Journal extends Model
         'date',
         'status'
     ];
+
+    public function schedule() {
+        return $this->belongsTo(Schedule::class);
+    }
 }

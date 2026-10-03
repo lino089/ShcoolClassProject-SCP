@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('journal_id')->constrained('journals');
             $table->foreignId('student_id')->constrained('users');
-            $table->enum('status', ['Hadir', 'Sakit', 'Izin', 'Alpa']);
+            $table->enum('status', ['Hadir', 'Sakit', 'Izin', 'Alpa'])->default('Hadir');
             $table->date('date');
             $table->timestamps();
         });

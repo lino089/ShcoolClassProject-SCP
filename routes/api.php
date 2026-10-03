@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\academicSettingController;
+use App\Http\Controllers\API\AttendanceController;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\JournalController;
 use App\Http\Controllers\API\ScheduleController;
@@ -71,4 +72,6 @@ Route::middleware(['auth:sanctum', 'role:vice_principal'])->group(function () {
 
 Route::middleware(['auth:sanctum', 'role:teacher'])->group(function () {
     Route::post('/journals', [JournalController::class, 'store']);
+
+    Route::post('/journals/{id}/attendance', [AttendanceController::class, 'store']);
 });
