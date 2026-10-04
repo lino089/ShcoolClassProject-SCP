@@ -66,7 +66,7 @@ class ScheduleImportController extends Controller
         $request->validate(['password' => 'required|string']);
 
         if (!Hash::check($request->password, $request->user()->password)) {
-            return response()->json(['success' => false, 'message' => 'Password Salah>']);
+            return response()->json(['success' => false, 'message' => 'Password Salah.']);
         }
 
         $import = ScheduleImport::with('rows')->where('status', 'preview_ready')->findOrFail($id);

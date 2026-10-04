@@ -46,8 +46,8 @@ class ParseSchedulePdfJob implements ShouldQueue
 
         $import->update(['status' => 'parsing']);
 
-        $fullPathKelas = storage_path('app/private' . $import->file_path_kelas);
-        $fullPathRuangan = storage_path('app/private' . $import->file_path_ruangan);
+        $fullPathKelas = storage_path('app/private/' . $import->file_path_kelas);
+        $fullPathRuangan = storage_path('app/private/' . $import->file_path_ruangan);
         $scriptPath = base_path('script/pdf_parser.py');
 
         $process = new Process(['python', $scriptPath, $fullPathKelas, $fullPathRuangan]);
@@ -65,7 +65,7 @@ class ParseSchedulePdfJob implements ShouldQueue
 
         if (is_array($parseData)) {
             foreach ($parseData as $row) {
-                $subject = Subject::where('name', 'ILIKE', '%' . trim($row['mapel_mentah'] . '%'))->first();
+                $subject = Subject::where('name', 'ILIKE', '%' . trim($row['mapel_mentah']) . '%')->first();
 
                 $teacher = User::where('role', 'teacher')
                     ->where('name', 'ILIKE', '%' . trim($row['guru_mentah']) . '%')

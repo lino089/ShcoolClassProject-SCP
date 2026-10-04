@@ -18,6 +18,14 @@ class academicSettingController extends Controller
             'password' => 'required|string'
         ]);
 
+        if($validator->fails()){
+            return response()->json([
+                'success' => false,
+                'message' => 'Validasi gagal',
+                'error' => $validator->errors()
+            ], 422);
+        }
+
         if (!Hash::check($request->password, $request->user()->password)) {
             return response()->json([
                 "success" => false,

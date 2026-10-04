@@ -9,10 +9,14 @@ class Journal extends Model
     protected $fillable = [
         'schedule_id',
         'date',
-        'status'
+        'topic_description',
+        'photo_path',
+        'status',
+        'substitute_teacher_id'
     ];
 
-    public function schedule() {
+    public function schedule()
+    {
         return $this->belongsTo(Schedule::class);
     }
 }

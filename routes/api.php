@@ -74,4 +74,6 @@ Route::middleware(['auth:sanctum', 'role:teacher'])->group(function () {
     Route::post('/journals', [JournalController::class, 'store']);
 
     Route::post('/journals/{id}/attendance', [AttendanceController::class, 'store']);
+
+    Route::post('/journals/{id}/complete', [JournalController::class, 'complete']);
 });
