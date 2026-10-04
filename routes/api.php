@@ -8,8 +8,10 @@ use App\Http\Controllers\API\ScheduleController;
 use App\Http\Controllers\API\ScheduleImportController;
 use App\Http\Controllers\API\SchoolClassController;
 use App\Http\Controllers\API\StudentController;
+use App\Http\Controllers\API\StudentPermisionController;
 use App\Http\Controllers\API\SubjectController;
 use App\Http\Controllers\API\TeacherController;
+use App\Models\StudentPermision;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -76,4 +78,10 @@ Route::middleware(['auth:sanctum', 'role:teacher'])->group(function () {
     Route::post('/journals/{id}/attendance', [AttendanceController::class, 'store']);
 
     Route::post('/journals/{id}/complete', [JournalController::class, 'complete']);
+
+
+});
+
+Route::middleware(['auth:sanctum', 'role:student'])->group(function () {
+    Route::post('/permissions', [StudentPermisionController::class, 'store']);
 });
