@@ -10,6 +10,7 @@ use App\Http\Controllers\API\SchoolClassController;
 use App\Http\Controllers\API\StudentController;
 use App\Http\Controllers\API\StudentPermisionController;
 use App\Http\Controllers\API\SubjectController;
+use App\Http\Controllers\API\SubstituteAssignmentController;
 use App\Http\Controllers\API\TeacherController;
 use App\Models\StudentPermision;
 use Illuminate\Http\Request;
@@ -80,6 +81,8 @@ Route::middleware(['auth:sanctum', 'role:teacher'])->group(function () {
     Route::post('/journals/{id}/complete', [JournalController::class, 'complete']);
 
     Route::post('/permissions/{id}/status', [StudentPermisionController::class, 'updateStatus']);
+
+    Route::post('/substitute', [SubstituteAssignmentController::class, 'store']);
 });
 
 Route::middleware(['auth:sanctum', 'role:student'])->group(function () {
