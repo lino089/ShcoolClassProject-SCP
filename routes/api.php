@@ -79,7 +79,7 @@ Route::middleware(['auth:sanctum', 'role:teacher'])->group(function () {
 
     Route::post('/journals/{id}/complete', [JournalController::class, 'complete']);
 
-
+    Route::post('/permissions/{id}/status', [StudentPermisionController::class, 'updateStatus']);
 });
 
 Route::middleware(['auth:sanctum', 'role:student'])->group(function () {

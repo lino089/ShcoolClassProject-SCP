@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Models\StudentPermision;
+use App\Models\TeacherAssignment;
 use Illuminate\Http\Client\Events\RequestSending;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -53,5 +54,42 @@ class StudentPermisionController extends Controller
             'message' => 'Pengajuan perizinan berhasil dikirim.',
             'data' => $permission
         ], 201);
+    }
+
+    public function updateStatus(Request $request, $id){
+        $isKesiswaan = TeacherAssignment::where('user_id', $request->user()->id)
+            ->where('type', 'kesiswaan')
+            ->exists();
+
+        if(!$isKesiswaan){
+            return response()->json([
+                'success' => false,
+                'message' => 'Hanya staf kesiswaan yang memiliki wewenang ini.'
+            ], 403);
+        }
+
+        $request->validate([
+            'status' => 'required|in:approved,rejected'
+        ]);
+
+        $permission = StudentPermision::findOrFail($id);
+
+        if ($permission->status !== 'pending'){
+            return response()->json([
+                'success' => false,
+                'message' => 'Status perizinan ini sudah diproses sebelumnya.'
+            ], 422);
+        }
+
+        $permission->update([
+            'status' => $request->status,
+            'approved_by' => $request->user()->id
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Perizinan berhasil diperbarui.',
+            'data' => $permission
+        ], 200);
     }
 }
