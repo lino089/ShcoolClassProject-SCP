@@ -8,6 +8,7 @@ use App\Models\Journal;
 use App\Models\Attendance;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use App\Models\StudentPermision;
 
 class AttendanceController extends Controller
 {
@@ -40,46 +41,70 @@ class AttendanceController extends Controller
 
         // 2. masukan data siswa bermasalah (Sakit/Izin/Alpa)
         DB::transaction(function () use ($journal, $request) {
-            Attendance::where('journal_id', $journal->id)->delete();
+            $journalDate = $journal->date;
+            $classId = $journal->schedule->class_id;
 
-            $exceptions = collect($request->input('exceptions', []));
-            $exceptionsStudentId = $exceptions->pluck('student_id')->toArray();
+            $approvedPermissions = StudentPermision::whereHas('student', function ($query) use ($classId) {
+                $query->where('class_id', $classId);
+            })
+                ->where('status', 'approved')
+                ->whereDate('start_date', '<=', $journalDate)
+                ->whereDate('end_date', '>=', $journalDate)
+                ->get();
 
-            $allStudentIds = User::where('role', 'student')
-                ->where('class_id', $journal->schedule->class_id)
-                ->pluck('id');
-
+            $autoExceptedIds = [];
             $attendanceData = [];
-            $now = now();
 
-            foreach ($exceptions as $exc) {
-                $attendanceData[] = [
+            foreach ($approvedPermissions as $perm) {
+                $autoExceptedIds[] = $perm->student_id;
+
+                $status = ($perm->permission_type === 'sakit') ? 'Sakit' : 'Izin';
+
+                $attendanceData[$perm->student_id] = [
                     'journal_id' => $journal->id,
-                    'student_id' => $exc['student_id'],
-                    'status' => $exc['status'],
-                    'date' => $journal->date,
-                    'created_at' => $now,
-                    'updated_at' => $now
+                    'student_id' => $perm->student_id,
+                    'status' => $status,
+                    'date' => $journalDate,
+                    'created_at' => now(),
+                    'updated_at' => now()
                 ];
             }
 
-            //3. masukan sisa siswa hadir
-            $presentStudentIds = $allStudentIds->diff($exceptionsStudentId);
+            $manualExceptions = collect($request->input('exceptions', []));
+            foreach ($manualExceptions as $exc) {
+                if (!in_array($exc['student_id'], $autoExceptedIds)) {
+                    $attendanceData[$exc['student_id']] = [
+                        'journal_id' => $journal->id,
+                        'student_id' => $exc['student_id'],
+                        'status' => $exc['status'],
+                        'date' => $journalDate,
+                        'created_at' => now(),
+                        'updated_at' => now()
+                    ];
+                }
+            }
+
+            $allStudentIds = User::where('role', 'student')->where('class_id', $classId)->pluck('id');
+            $absentIds = array_keys($attendanceData);
+            $presentStudentIds = $allStudentIds->diff($absentIds);
+
             foreach ($presentStudentIds as $studentId) {
                 $attendanceData[] = [
                     'journal_id' => $journal->id,
                     'student_id' => $studentId,
-                    'date' => $journal->date,
-                    'created_at' => $now,
-                    'updated_at' => $now
+                    'status' => 'Hadir',
+                    'date' => $journalDate,
+                    'created_at' => now(),
+                    'updated_at' => now()
                 ];
             }
-            
-            // 4. Eksekusi Bulk Insert
-            if(!empty($attendanceData)){
-                Attendance::insert($attendanceData);
-            }
+
+            Attendance::where('journal_id', $journal->id)->delete();
+            Attendance::insert(array_values($attendanceData));
+
         });
+
+
 
         return response()->json([
             'success' => true,
@@ -88,4 +113,5 @@ class AttendanceController extends Controller
 
 
     }
+
 }
