@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\academicSettingController;
 use App\Http\Controllers\API\AttendanceController;
+use App\Http\Controllers\API\AttendanceWarningController;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\JournalController;
 use App\Http\Controllers\API\ScheduleController;
@@ -83,6 +84,8 @@ Route::middleware(['auth:sanctum', 'role:teacher'])->group(function () {
     Route::post('/permissions/{id}/status', [StudentPermisionController::class, 'updateStatus']);
 
     Route::post('/substitute', [SubstituteAssignmentController::class, 'store']);
+
+    Route::get('/attendance-warnings', [AttendanceWarningController::class, 'index']);
 });
 
 Route::middleware(['auth:sanctum', 'role:student'])->group(function () {
