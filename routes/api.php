@@ -87,4 +87,6 @@ Route::middleware(['auth:sanctum', 'role:teacher'])->group(function () {
 
 Route::middleware(['auth:sanctum', 'role:student'])->group(function () {
     Route::post('/permissions', [StudentPermisionController::class, 'store']);
+
+    Route::get('/students/{id}/attendance/summary', [StudentController::class, 'attendanceSummary']);
 });
