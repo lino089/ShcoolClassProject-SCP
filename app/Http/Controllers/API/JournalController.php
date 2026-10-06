@@ -9,6 +9,7 @@ use App\Models\Journal;
 use Intervention\Image\Laravel\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use App\Models\SubstituteAssignment;
 class JournalController extends Controller
 {
         public function store(Request $request){
@@ -17,23 +18,27 @@ class JournalController extends Controller
             ]);
             
             $schedule = Schedule::findOrFail($request->schedule_id);
+            $today = now()->toDateString(); //Menghasilkan yyyy-mm-dd sesuai WIB
+            $userId = $request->user()->id;
 
-            if($schedule->teacher_id !== $request->user()->id){
+            $isOriginalTeacher = ($schedule->teacher_id === $userId);
+
+            $isSubstituteTeacher = SubstituteAssignment::where('schedule_id', $schedule->id)
+                ->where('substitute_teacher_id', $userId)
+                ->whereDate('date', $today)
+                ->exists();
+
+            if(!$isOriginalTeacher && !$isSubstituteTeacher){
                 return response()->json([
                     'success' => false,
-                    'message' => 'Akses ditolak.',
-                    'errors' => [
-                        'schedule' => ['Anda tidak memiliki akses ke jadwal ini.']
-                    ]
-                ]);
+                    'message' => 'Anda tidak memiliki hak akses untuk membuka jadwal ini.'
+                ], 403);
             }
-
-            $today = now()->toDateString(); //Menghasilkan yyyy-mm-dd sesuai WIB
 
             // mengambil journal yang sudah ada, atau buat jika belum
             $journal = Journal::firstOrCreate(
                 ['schedule_id' => $schedule->id, 'date' => $today],
-                ['status' => 'ongoing']
+                ['status' => 'ongoing', 'substitute_teacher_id' => $isSubstituteTeacher ? $userId : null]
             );
 
             return response()->json([

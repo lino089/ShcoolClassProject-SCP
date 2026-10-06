@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('schedule_id')->constrained('schedules')->onDelete('cascade');
             $table->foreignId('original_teacher_id')->constrained('users');
+            $table->foreignId('substitute_teacher_id')->constrained('users');
             $table->foreignId('assigned_by')->constrained('users');
             $table->date('date');
             $table->text('reason')->nullable();
