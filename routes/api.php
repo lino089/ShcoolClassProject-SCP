@@ -5,6 +5,7 @@ use App\Http\Controllers\API\AttendanceController;
 use App\Http\Controllers\API\AttendanceWarningController;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\JournalController;
+use App\Http\Controllers\API\QuizController;
 use App\Http\Controllers\API\ScheduleController;
 use App\Http\Controllers\API\ScheduleImportController;
 use App\Http\Controllers\API\SchoolClassController;
@@ -86,10 +87,16 @@ Route::middleware(['auth:sanctum', 'role:teacher'])->group(function () {
     Route::post('/substitute', [SubstituteAssignmentController::class, 'store']);
 
     Route::get('/attendance-warnings', [AttendanceWarningController::class, 'index']);
+
+    Route::post('/journals/{id}/quiz/generate', [QuizController::class, 'generate']);
+
+    Route::patch('/quizzes/{id}/publish', [QuizController::class, 'publish']);
 });
 
 Route::middleware(['auth:sanctum', 'role:student'])->group(function () {
     Route::post('/permissions', [StudentPermisionController::class, 'store']);
 
     Route::get('/students/{id}/attendance/summary', [StudentController::class, 'attendanceSummary']);
+
+    Route::get('/quizzes/{id}', [QuizController::class, 'show']);
 });
