@@ -99,4 +99,6 @@ Route::middleware(['auth:sanctum', 'role:student'])->group(function () {
     Route::get('/students/{id}/attendance/summary', [StudentController::class, 'attendanceSummary']);
 
     Route::get('/quizzes/{id}', [QuizController::class, 'show']);
+
+    Route::post('/quizzes/{id}/submit', [QuizController::class, 'submit']);
 });
