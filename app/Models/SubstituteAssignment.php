@@ -7,4 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class SubstituteAssignment extends Model
 {
     protected $guarded = ['id'];
+
+
 }

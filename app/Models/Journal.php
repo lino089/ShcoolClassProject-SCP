@@ -19,4 +19,9 @@ class Journal extends Model
     {
         return $this->belongsTo(Schedule::class);
     }
+
+    public function substituteTeacher()
+    {
+        return $this->belongsTo(User::class, 'substitute_teacher_id');
+    }
 }

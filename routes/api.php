@@ -6,6 +6,7 @@ use App\Http\Controllers\API\AttendanceWarningController;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\JournalController;
 use App\Http\Controllers\API\QuizController;
+use App\Http\Controllers\API\ReportController;
 use App\Http\Controllers\API\ScheduleController;
 use App\Http\Controllers\API\ScheduleImportController;
 use App\Http\Controllers\API\SchoolClassController;
@@ -73,6 +74,8 @@ Route::middleware(['auth:sanctum', 'role:vice_principal'])->group(function () {
     Route::post('/subject', [SubjectController::class, 'store']);
 
     Route::post('/schedule-imports/{id}/confirm', [ScheduleImportController::class, 'confirm']);
+
+    Route::get('/reports/journals', [ReportController::class, 'teachingJournals']);
 });
 
 Route::middleware(['auth:sanctum', 'role:teacher'])->group(function () {
